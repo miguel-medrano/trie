@@ -1,32 +1,46 @@
-Trie = function() {
+Trie = function(wordDictionary) {
 	var that = Object.create(Trie.prototype);
+	var root = {}
 
-	var root = {};
-
-
-
-	that.insert = function(word) {
-		var currentNode = root;
-		for(var i=0; i < word.length; i++){
-			if(!(word[i] in currentNode)){
-				currentNode[word[i]] = {};
+    wordDictionary.forEach( function(word){
+		var word = word.toLowerCase();
+        var currentNode = root;
+		for(var i=0; i<word.length; i++){
+			var letter = word[i];
+            if(!(letter in currentNode)){
+				currentNode[letter] = {endingMarker: false};
 			}
-			currentNode = currentNode[word[i]];
+			currentNode = currentNode[letter];
 		}
-		currentNode.endMarker = true;
-	};
+		currentNode.endingMarker = true;
+	});
 
-	that.search = function(word) {
-		var currentNode = root;
-		for(var i=0; i < word.length; i++){
-			if(!(word[i] in currentNode)){
-				return false
-			}
-			currentNode = currentNode[word[i]];
+	that.getWordsWithPrefix = function(word){
+		var word = word.toLowerCase();
+        var currentNode = root;
+		var prefixWordArray = [];
+        var wordsInNode = function(node, word){
+            if(node.endingMarker){
+                prefixWordArray.push(word);
+            }
+            for(var letter in node){
+                if(letter !== 'endingMarker'){
+                    wordsInNode(node[letter], word+letter);
+                }
+            }
+        }
+
+        for(var i=0; i< word.length; i++) {
+			var letter = word[i];
+			if (letter in currentNode) {
+				currentNode = currentNode[letter];
+			} else {
+                return prefixWordArray;
+            }
 		}
-		return currentNode.endMarker === true;
+        wordsInNode(currentNode, word);
+        return prefixWordArray;
 	}
-
 	Object.freeze(that);
 	return that
 }

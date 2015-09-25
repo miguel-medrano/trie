@@ -12,6 +12,7 @@
 
   <script src="./words.js" charset="utf-8"></script>
   <script src="./controller.js" charset="utf-8"></script>
+  <script src="trie.js" charset="utf-8"></script>
   <script>
 
   	document.addEventListener('DOMContentLoaded', function () {
@@ -19,7 +20,7 @@
 	  // Instantiate your trie data type here, and load the words 
 	  // in the provided JSON dictionary (accessible as an array
 	  // stored in the variable 'WORDS') into the data structure.
-
+        var trie = Trie(WORDS);
 	  // After instantiating and populating your trie above, you need
 	  // to register a listener function to be called after each 
 	  // keypress. The body of the function below will serve this
@@ -43,14 +44,13 @@
 
 	  	CONTROLLER.clearSearchResults();
 
-	  	// Display the current word
-	  	CONTROLLER.appendToSearchResults(word);
-
 	  	// Display some random words
+	  	var wordArray = trie.getWordsWithPrefix(word).sort();
 	  	for (i = 0; i < NUM_WORDS_TO_SHOW; ++i) {
-	  	  randomWord = WORDS[Math.floor(Math.random() * WORDS.length)];
-	  	  CONTROLLER.appendToSearchResults(randomWord);
-	  	}
+            if (wordArray[i] !== undefined) {
+                CONTROLLER.appendToSearchResults(wordArray[i]);
+            }
+        }
 	  	
       });
 
