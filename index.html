@@ -12,7 +12,7 @@
 
   <script src="./words.js" charset="utf-8"></script>
   <script src="./controller.js" charset="utf-8"></script>
-  <script src="trie.js" charset="utf-8"></script>
+  <script src="./trie.js" charset="utf-8"></script>
   <script>
 
   	document.addEventListener('DOMContentLoaded', function () {
@@ -40,18 +40,19 @@
 	    // code to provide autocompletion suggestions.
 
 	  	var NUM_WORDS_TO_SHOW = 10;
-	  	var i, randomWord;
-
+	  	var i;
+        //Clear the textbook
 	  	CONTROLLER.clearSearchResults();
 
 	  	// Display some random words
 	  	var wordArray = trie.getWordsWithPrefix(word).sort();
 	  	for (i = 0; i < NUM_WORDS_TO_SHOW; ++i) {
-            if (wordArray[i] !== undefined) {
+            if (i < wordArray.length) {
                 CONTROLLER.appendToSearchResults(wordArray[i]);
-            }
+            } else {break;}
         }
-	  	
+
+
       });
 
   	});
